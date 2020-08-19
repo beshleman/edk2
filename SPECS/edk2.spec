@@ -4,7 +4,7 @@
 Name: edk2
 Summary: EFI Development Kit II
 Version: %{edk2_date}git%{edk2_githash}
-Release: 1.4.2%{?dist}
+Release: 1.4.3%{?dist}
 
 License: BSD and MIT
 URL: https://github.com/tianocore/edk2
@@ -25,6 +25,8 @@ Patch10: disable-modules.patch
 Patch11: xenorder.patch
 Patch12: keep-caching-enabled.patch
 Patch13: remove-unused-crypto.patch
+Patch14: XenVariable-remove-EFI_INVALID_PARAMETER-check.patch
+
 
 Provides: gitsha(https://code.citrite.net/rest/archive/latest/projects/XS/repos/edk2.pg/archive?at=1.4.2&format=tar#/edk2.pg.tar) = 925e88bff6e61154110846a54a98ab6422129594
 

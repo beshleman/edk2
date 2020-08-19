@@ -1,0 +1,36 @@
+From 08b65759fa6a0db5d79ee7a84442551fac835275 Mon Sep 17 00:00:00 2001
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+Date: Wed, 19 Aug 2020 16:34:02 -0700
+Subject: [PATCH] XenVariable: remove EFI_INVALID_PARAMETER check
+
+Previously, if the Name string is greater in length than NameSize,
+XenGetNextVariable returns EFI_INVALID_PARAMETER.
+
+This is not correct, as it does not conform to the spec and causes bugs
+in code not expecting a non-conformant return (see BmForEachVariable()
+in which this sometimes causes an infinite loop).
+
+This commit removes that check and avoids these bugs.
+
+Signed-off-by: Bobby Eshleman <bobbyeshleman@gmail.com>
+---
+ OvmfPkg/XenVariable/XenVariable.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/OvmfPkg/XenVariable/XenVariable.c b/OvmfPkg/XenVariable/XenVariable.c
+index b4af6010..ed88a1e9 100644
+--- a/OvmfPkg/XenVariable/XenVariable.c
++++ b/OvmfPkg/XenVariable/XenVariable.c
+@@ -94,9 +94,6 @@ XenGetNextVariableNameLocked (
+   if (!VariableNameSize || !VariableName || !VendorGuid)
+       return EFI_INVALID_PARAMETER;
+ 
+-  if (StrSize(VariableName) > *VariableNameSize)
+-      return EFI_INVALID_PARAMETER;
+-
+   ptr = comm_buf;
+   serialize_uint32(&ptr, 1); /* version */
+   serialize_command(&ptr, COMMAND_GET_NEXT_VARIABLE);
+-- 
+2.27.0
+
